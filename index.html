@@ -15,9 +15,32 @@
   </head>
   <body>
     <header>
-      <div id="logo-div"><img src="/images/books.png"</div>
+      <div id="branding-container">
+        <figure id="logo-fig"><img src="/images/books.png"></figure>
+        <h3>Book Lovers</h3>
+      </div>
+      <div id="search-container">
+        <div class="input-group mb-3">
+          <input id="book-search-input" type="text" class="form-control" placeholder="Search by Title, Author, Edition & More..." aria-label="Recipient's username" aria-describedby="button-addon2">
+          <button id="search-btn" class="btn btn-outline-secondary" type="button" id="button-addon2">Search</button>
+        </div>
+      </div>
     </header>
-    <main></main>
+    <main> 
+      <div id="card-display">
+        <div class="list-menu">
+          <h6>Search Results</h6>
+          <div>
+            <ul class="book-list-links">
+              <p class="my-lists">My Lists :</p>
+              <li class="book-list-element"><img class="icons" src="/images/check-book.png">Finished Books</li>
+              <li class="book-list-element"><img class="icons" src="/images/future.png">To Read</li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+    </main>
     <footer></footer>
 
     <script

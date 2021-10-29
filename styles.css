@@ -1,0 +1,84 @@
+html{
+    box-sizing: border-box;
+}
+header{
+    display:flex;
+    justify-content: space-between;
+    width:100%;
+}
+#logo-fig img{
+    max-width:50px;
+    padding:5px;
+}
+#branding-container{
+    margin-top:.5%;
+    width:100%;
+    display:flex;
+    flex-direction: row;
+}
+h3{
+    margin:1% .2%;
+    color:rgb(0, 132, 255);
+}
+h4{
+    font-size:1.2rem;
+    margin-bottom:5px;
+    margin-top:20px;
+}
+h5{
+    font-size:1rem;
+}
+h6{
+    padding-left:1.5%;
+    margin-top:1%;
+    font-size:1.5rem;
+}
+#search-container{
+    margin-top:1%;
+    width:55%;
+    margin-right:1%;
+}
+.completed-reading-btn{
+    width:300px;
+    border-radius:8px;
+    background-color:rgb(136, 197, 255);
+    border:none;
+    padding:.5% 1%;
+}
+.add-to-read-btn{
+    width:300px;
+    border-radius: 8px;
+    background-color:rgb(206, 230, 252);
+    border:none;
+    padding:.5% 1%;
+}
+.icons{
+    max-width:20px;
+}
+.list-menu{
+    display:flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-top:30px;
+}
+.book-list-links{
+    display:flex;
+}
+.book-list-element{
+    list-style: none;
+    margin-right:20px;
+}
+.book-list-element a{
+    text-decoration: none;
+    color: rgb(202, 118, 118);
+}
+.my-lists{
+    margin-right:15px;
+}
+.placeholder{
+    width:60px;
+}
+.book-info{
+    display:flex;
+    flex-direction: column;
+}
