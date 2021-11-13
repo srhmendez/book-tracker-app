@@ -24,6 +24,7 @@
             <h3>Book Lovers</h3>
         </a>
       </div>
+
       <div id="search-container">
         <div class="input-group mb-3">
           <input id="book-search-input" type="text" class="form-control" placeholder="Search by Title, Author, Edition & More..." aria-label="Recipient's username" aria-describedby="button-addon2">
@@ -32,16 +33,23 @@
       </div>
     </header>
     <main> 
+      
       <div id="card-display">
         <div class="list-menu">
-          <h6 id="search-div-heading">Books I Want To Read</h6>
+          
+          <h6>Books I Want To Read</h6>
+
           <div>
             <ul class="book-list-links">
-              <li class="book-list-element page-underlined"><a id="finished-books" href="/finished-books.html"><img class="icons" src="/images/check-book.png">Finished Books</a></li>
-              <li class="book-list-element"><a id="to-read-books" class="highlighted-tab" href="/to-read-books.html"><img class="icons" src="/images/future.png">To Read</a></li>
+              <li class="book-list-element page-underlined"><a id="finished-books" class="highlighted-tab"href="/finished-books.html"><img class="icons" src="/images/check-book.png">Finished Books</a></li>
+              <li class="book-list-element"><a id="to-read-books"href="/to-read-books.html"><img class="icons" src="/images/future.png">To Read</a></li>
             </ul>
           </div>
         </div>
+        <div id="list-container">
+          <!-- where list of books will go  -->
+        </div>
+        <p id="search-div-heading"></p>
         <div class="loader"></div>
         <div id="search-results">
           <!-- where card divs will appear -->

@@ -1,6 +1,7 @@
 html {
   box-sizing: border-box;
 }
+body{ margin: auto 0;}
 header {
   display: flex;
   justify-content: space-between;
@@ -127,9 +128,36 @@ h6 {
 .rating {
   width: 180px;
   padding-right:1%;
+  align-self: self-end;
 }
 
 .rating__star {
   cursor: pointer;
   color: #ffd64f;
+}
+
+
+/* List Cards */
+.card-body-list{
+    padding-left:1.5%;
+}
+#list-container{
+    display:flex;
+    flex-wrap: wrap;
+    margin:1.5%;
+    
+}
+.list-book-info{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: baseline;
+}
+.card-body-list{
+    width: 275px;
+    padding:10px;
+    min-height:275px;
+}
+.list-book-info h4 {
+    height:40px;
 }

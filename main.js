@@ -94,6 +94,7 @@
                 savedBooks.push(book)
                 book.list = 'unread'
                 display(book, true)
+                console.log(savedBooks)
             }
     
         })
@@ -116,6 +117,7 @@
                 savedBooks.push(book)
                 book.list = 'read'
                 display(book, true)
+                console.log(savedBooks)
             }
         })
 
