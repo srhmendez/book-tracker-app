@@ -161,7 +161,7 @@
                 let bookCard = `
                 <div class="list-card">
                     <div class="card-body-list">
-                        <img class="placeholder" src="/images/placeholder.png">
+                        <img class="placeholder" src="/public/images/placeholder.png">
                         <div class="list-book-info" id="${book.id}">
                             <h4>${book.title}</h4>
                             <h5>Author: ${book.author}</h5>
