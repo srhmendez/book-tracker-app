@@ -144,8 +144,12 @@ h6 {
 #list-container{
     display:flex;
     flex-wrap: wrap;
-    margin:1.5%;
-    
+    margin:1.5%;  
+}
+#read-list-container{
+  display:flex;
+  flex-wrap: wrap;
+  margin:1.5%;  
 }
 .list-book-info{
     display: flex;

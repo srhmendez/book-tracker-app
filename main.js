@@ -5,7 +5,6 @@
 
     let searchResults = [];
     let savedBooks = [];
-    let ratingStars = {}
 
 
     searchInput.addEventListener(("keyup"), event => event.code === "Enter" ? searchBtn.click() : false);
@@ -21,9 +20,9 @@
 
             console.log('Finished Books')
             savedBooks.forEach(book => {
-                if (book.list == 'complete'){
+                if (book.list == 'read'){
                     console.log(book)
-                    display(book)
+                    displayListBooks(book)
                 }
             })
         }  
@@ -31,9 +30,9 @@
 
             console.log('Unread Books')
             savedBooks.forEach(book => {
-                if (book.list == 'complete'){
+                if (book.list == 'unread'){
                     console.log(book)
-                    display(book)
+                    displayListBooks(book)
                 }
             })
         }
@@ -61,7 +60,7 @@
                         formatBookData(bookObj)   
                         });
                         spinningLoader.style.display = "none";
-                        searchResults.forEach(item => display(item, false));
+                        searchResults.forEach(item => displaySearch(item));
                         let toReadList = document.getElementsByClassName('add-to-read-btn');
                         for (var i = 0; i < toReadList.length; i++) {
                             toReadList[i].addEventListener('click', addToReadList, false);
@@ -77,37 +76,63 @@
         
     };
 
+    function sortListBooks() {
+        let path = window.location.pathname == '/finished-books.html' ? false : true;
+        console.log(path)
+
+        if (path === true){
+            let displayListDivRead = document.getElementById('read-list-container');
+            displayListDivRead.innerHTML = '';
+        } else {
+            let displayListDivUnread = document.getElementById('list-container');
+            console.log('erasing')
+            displayListDivUnread.innerHTML = '';
+        }
+
+        savedBooks.forEach((savedBook) =>{
+            displayListBooks(savedBook, true)
+        })
+    }
+
     
     function addToReadList(event) {
         let idOfBookToAdd = event.target.parentNode.parentNode.id
         let isInList = false;
+        let savedBookIndex;
 
         savedBooks.forEach(savedBook => {
             if (savedBook.id == idOfBookToAdd) {
                 isInList = true;
+                savedBookIndex = savedBooks.indexOf(savedBook);
             }
         })
 
         searchResults.forEach( book => {
 
             if (book.id == idOfBookToAdd && isInList == false) {
-                savedBooks.push(book)
                 book.list = 'unread'
-                display(book, true)
+                savedBooks.push(book)
                 console.log(savedBooks)
-            }
-    
+            } else if (book.id == idOfBookToAdd && isInList == true){
+                savedBooks[savedBookIndex].list = 'unread';
+                savedBooks.push(book)
+            } 
         })
+
+        sortListBooks();
+        console.log('in add to read list',savedBooks)
 
     }
 
     function addToCompletedBookList(event) {
         let idOfBookToAdd = event.target.parentNode.parentNode.id
         let isInList = false;
+        let savedBookIndex;
 
         savedBooks.forEach(savedBook => {
             if (savedBook.id == idOfBookToAdd) {
                 isInList = true;
+                savedBookIndex = savedBooks.indexOf(savedBook);
             }
         })
 
@@ -116,25 +141,23 @@
             if (book.id == idOfBookToAdd && isInList == false) {
                 savedBooks.push(book)
                 book.list = 'read'
-                display(book, true)
+                displayListBooks(book, true)
                 console.log(savedBooks)
+            } else if (book.id == idOfBookToAdd && isInList == true){
+                savedBooks[savedBookIndex].list = 'read';
+                displayListBooks(book, true)
             }
         })
+        sortListBooks();
+        console.log(savedBooks)
 
     }
 
+    function displayListBooks(book, displayBookInList){
+        let unreadDisplayListDiv = document.getElementById('read-list-container');
+        let readDisplayListDiv = document.getElementById('list-container');
 
-    function display(book, displayBookInList) {
-
-
-        let displayListDiv = document.getElementById('list-container');
-        let displaySearchResultsDiv = document.getElementById('search-results');
-        
-
-        if (displayBookInList){
-            console.log(window.location.pathname)
-
-            if (window.location.pathname == '/finished-books.html'){
+            if (window.location.pathname == '/finished-books.html' && book.list == 'read'){
                 let bookCard = `
                 <div class="list-card">
                     <div class="card-body-list">
@@ -155,11 +178,14 @@
                     </div>
                 </div>
                 `
-                displayListDiv.insertAdjacentHTML('beforeend', bookCard)
+                readDisplayListDiv.insertAdjacentHTML('beforeend', bookCard)
                 let stars = [...document.getElementsByClassName(`rating__star ${book.id}`)];
                 document.getElementById(`stars-${book.id}`).addEventListener('change', executeRating(stars, book.id))
 
-            } else if (window.location.pathname == '/to-read-books.html') {
+            } else if (window.location.pathname == '/to-read-books.html' && book.list == 'unread') {
+
+                console.log(book)
+                
                 bookCard = `
                 <div class="list-card">
                     <div class="card-body-list">
@@ -172,11 +198,15 @@
                     </div>
                 </div>
                 `
-                displayListDiv.insertAdjacentHTML('beforeend', bookCard)
-            }
+                unreadDisplayListDiv.insertAdjacentHTML('beforeend', bookCard)
+            } 
 
-            
-        } else {
+    }
+
+    function displaySearch(book) {
+
+        let displaySearchResultsDiv = document.getElementById('search-results');
+         
 
             let bookCard = `
             <div class="card">
@@ -196,7 +226,6 @@
             `
 
             displaySearchResultsDiv.insertAdjacentHTML('beforeend',bookCard);
-        }
 
     }
 
