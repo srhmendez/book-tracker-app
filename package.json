@@ -2,9 +2,9 @@
   "name": "book-tracker-app",
   "version": "1.0.0",
   "description": "### User Stories:  - As a user, I want to be able to search for books - As a user I want to be able to add books from my search results to my list of books to read, or books I have read - As a user, I want to track books I have read - As a user, I need to be able to rate books I have read - As a user, I want to be able to make a list of books I want to read",
-  "main": "main.js",
+  "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node server.js"
   },
   "repository": {
     "type": "git",
@@ -17,6 +17,10 @@
   },
   "homepage": "https://github.com/srhmendez/book-tracker-app#readme",
   "dependencies": {
+    "body-parser": "^1.19.0",
     "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15"
   }
 }
