@@ -50,7 +50,7 @@
             spinningLoader.style.display = "block";
 
             const searchResponse = new Promise( (res, rej ) => {
-                fetch(`http://openlibrary.org/search.json?q=${searchValue}&limit=12`)
+                fetch(`https://openlibrary.org/search.json?q=${searchValue}&limit=12`)
                     .then(res => res.json())
                     .then(data => {
                     console.log('retrieving data...');
