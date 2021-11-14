@@ -3,9 +3,7 @@ const router = express.Router();
 
 
 //get all books
-router.get('/', (req,res)=>{
-    res.send('hello')
-})
+
 
 
 module.exports = router;
