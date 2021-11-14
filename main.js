@@ -146,7 +146,7 @@
             } else if (book.id == idOfBookToAdd && isInList == true){
                 savedBooks[savedBookIndex].list = 'read';
                 displayListBooks(book, true)
-            }
+            } 
         })
         sortListBooks();
         console.log(savedBooks)
