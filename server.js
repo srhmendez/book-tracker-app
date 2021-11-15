@@ -1,5 +1,6 @@
 const express = require('express');
 const app = express();
+const connectDB = require('./connection/connection')
 const bodyParser = require ('body-parser');
 const router = require ('./routes/router');
 
@@ -19,7 +20,7 @@ app.use(express.static('public'));
 //app.use('/', router);
 
 
-// connectDB();
+connectDB();
 
 app.listen(PORT, () => console.log(`YAY server running on http://localhost:${PORT}`));         
 
