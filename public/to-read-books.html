@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Book Tracker App</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
+      crossorigin="anonymous"
+    />
+    <link href="/styles.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm" crossorigin="anonymous">
+  </head>
+  <body>
+    <header>
+      <div id="branding-container">
+        <a class="logo-home" href="/index.html">
+            <figure id="logo-fig">
+                <img src="/images/books.png">
+            </figure>
+            <h3>Book Lovers</h3>
+        </a>
+      </div>
+
+      <div id="search-container">
+        <div class="input-group mb-3">
+          <input id="book-search-input" type="text" class="form-control" placeholder="Search by Title, Author, Edition & More..." aria-label="Recipient's username" aria-describedby="button-addon2">
+          <button id="search-btn" class="btn btn-outline-secondary" type="button" id="button-addon2">Search</button>
+        </div>
+      </div>
+    </header>
+    <main> 
+      
+      <div id="card-display">
+        <div class="list-menu">
+          
+          <h6>Books I Want To Read</h6>
+
+          <div>
+            <ul class="book-list-links">
+              <li class="book-list-element"><a id="finished-books" class="highlighted-tab"href="/finished-books.html"><img class="icons" src="/images/check-book.png">Finished Books</a></li>
+              <li class="book-list-element page-underlined"><a id="to-read-books" href="/to-read-books.html"><img class="icons" src="/images/future.png">To Read</a></li>
+            </ul>
+          </div>
+        </div>
+        <div id="read-list-container">
+          <!-- where list of books will go  -->
+        </div>
+        <p id="search-div-heading">Search Results</p>
+        <div class="loader"></div>
+        <div id="search-results">
+          <!-- where card divs will appear -->
+        </div>
+      </div>
+    </main>
+    <footer></footer>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+      crossorigin="anonymous"
+    ></script>
+    <script src="/index.js"></script>
+  </body>
+</html>
