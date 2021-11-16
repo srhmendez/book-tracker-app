@@ -5,7 +5,10 @@ const URI = process.env.MONGO_URI
 const connectDB = async () => {
     try {
         //connecting to mongoDB : String
-        const con = await mongoose.connect(URI)
+        const con = await mongoose.connect(URI, {
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+        })
         console.log(`Mongo DB has successfully connected : ${con.connection.host}`)
 
     } catch (error) {
