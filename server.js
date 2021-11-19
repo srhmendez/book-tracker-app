@@ -2,9 +2,9 @@ const express = require('express');
 const app = express();
 const connectDB = require('./connection/connection')
 const bodyParser = require ('body-parser');
-//const router = require ('./routes/router');
+const router = require ('./routes/router');
 
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 7000;
 
 
 
@@ -17,9 +17,9 @@ app.use(bodyParser.json());
 
 app.use(express.json());
 
-app.use(express.static('public'));
+app.get('/public/')
 
-//app.use('/', router);
+app.use('/', router);
 
 
 connectDB();
