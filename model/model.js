@@ -2,13 +2,8 @@ const mongoose = require('mongoose');
 
 let schema = new mongoose.Schema({
 
-    name : {
-        type : String,
-        required : true,
-        unique : true
-    },
     id : {
-        type : Number,
+        type : String,
         required : true,
         unique : true
     },
@@ -21,10 +16,10 @@ let schema = new mongoose.Schema({
         required : true
     },
     isbn : {
-        type : Number,
+        type : String,
     },
     published : {
-        type : String,
+        type : Array,
     },
     image : {
         type : String,
@@ -34,11 +29,10 @@ let schema = new mongoose.Schema({
         required : true,
     },
     stars : {
-        type : Number,
-        required : true
+        type : Number || Object,
     }
 })
 
-const tododb = mongoose.model('tododb',schema);
+const savedBooks = mongoose.model('savedBooks',schema);
 
-module.exports = tododb;
+module.exports = savedBooks;

@@ -1,10 +1,11 @@
+let savedBooks = [];
+
 (function (window){
 
     let searchInput = document.getElementById('book-search-input')
     const searchBtn = document.getElementById('search-btn');
 
     let searchResults = [];
-    let savedBooks = [];
 
 
     searchInput.addEventListener(("keyup"), event => event.code === "Enter" ? searchBtn.click() : false);
@@ -15,28 +16,17 @@
     searchInput.focus();
     searchInput.select();
 
-    function loadList() {
+    async function loadList() {
+
         if (window.location.pathname === '/finished-books.html') {
-
-            console.log('Finished Books')
-            savedBooks.forEach(book => {
-                if (book.list == 'read'){
-                    console.log(book)
-                    displayListBooks(book)
-                }
-            })
-        }  
-        if (window.location.pathname === '/to-read-books.html'){
-
-            console.log('Unread Books')
-            savedBooks.forEach(book => {
-                if (book.list == 'unread'){
-                    console.log(book)
-                    displayListBooks(book)
-                }
-            })
+            displayFinishedBooks();
         }
-    } loadList();
+        
+         
+        if (window.location.pathname === '/to-read-books.html'){
+            displayToReadBooks();
+        }
+    } loadList()
 
     async function getSearchResults (event) {
 
@@ -77,15 +67,16 @@
     };
 
     function sortListBooks() {
-        let path = window.location.pathname == '/finished-books.html' ? false : true;
+        let path = window.location.pathname == '/finished-books.html' ? true : false;
         console.log(path)
 
-        if (path === true){
+        if (path === false){
             let displayListDivRead = document.getElementById('read-list-container');
-            displayListDivRead.innerHTML = '';
+            if (displayListDivRead != null){
+                displayListDivRead.innerHTML = '';
+            }
         } else {
             let displayListDivUnread = document.getElementById('list-container');
-            console.log('erasing')
             displayListDivUnread.innerHTML = '';
         }
 
@@ -113,9 +104,13 @@
                 book.list = 'unread'
                 savedBooks.push(book)
                 console.log(savedBooks)
+                sortListBooks();
+                addToDB(book)
             } else if (book.id == idOfBookToAdd && isInList == true){
                 savedBooks[savedBookIndex].list = 'unread';
                 savedBooks.push(book)
+                sortListBooks();
+                updateBookInDB(book)
             } 
         })
 
@@ -141,11 +136,13 @@
             if (book.id == idOfBookToAdd && isInList == false) {
                 savedBooks.push(book)
                 book.list = 'read'
-                displayListBooks(book, true)
+                displayListBooks(book)
                 console.log(savedBooks)
+                addToDB(book)
             } else if (book.id == idOfBookToAdd && isInList == true){
                 savedBooks[savedBookIndex].list = 'read';
-                displayListBooks(book, true)
+                displayListBooks(book)
+                updateBookInDB(book)
             } 
         })
         sortListBooks();
@@ -153,15 +150,16 @@
 
     }
 
-    function displayListBooks(book, displayBookInList){
+    function displayListBooks(book){
         let unreadDisplayListDiv = document.getElementById('read-list-container');
         let readDisplayListDiv = document.getElementById('list-container');
+        console.log('this is the book', book)
 
             if (window.location.pathname == '/finished-books.html' && book.list == 'read'){
                 let bookCard = `
                 <div class="list-card">
                     <div class="card-body-list">
-                        <img class="placeholder" src="/public/images/placeholder.png">
+                        <img class="placeholder" src="/images/placeholder.png">
                         <div class="list-book-info" id="${book.id}">
                             <h4>${book.title}</h4>
                             <h5>Author: ${book.author}</h5>
@@ -172,7 +170,7 @@
                                 <i value="3" class="rating__star ${book.id} far fa-star"></i>
                                 <i value="4" class="rating__star ${book.id} far fa-star"></i>
                                 <i value="5" class="rating__star ${book.id} far fa-star"></i>
-                                <span class="rating__result ${book.id}"></span>
+                                <span class="rating__result"></span>
                             </div>
                         </div>
                     </div>
@@ -180,7 +178,8 @@
                 `
                 readDisplayListDiv.insertAdjacentHTML('beforeend', bookCard)
                 let stars = [...document.getElementsByClassName(`rating__star ${book.id}`)];
-                document.getElementById(`stars-${book.id}`).addEventListener('change', executeRating(stars, book.id))
+                let bookId = book.id;
+                document.getElementById(`stars-${book.id}`).addEventListener('change', executeRating(stars, bookId))
 
             } else if (window.location.pathname == '/to-read-books.html' && book.list == 'unread') {
 
@@ -199,7 +198,9 @@
                 </div>
                 `
                 unreadDisplayListDiv.insertAdjacentHTML('beforeend', bookCard)
-            } 
+            }
+        
+        
 
     }
 
@@ -246,44 +247,109 @@
     }
 
 
-    function executeRating(stars, bookId) {
-        const starClassActive = `rating__star ${bookId} fas fa-star`;
-        const starClassInactive = `rating__star ${bookId} far fa-star`;
-        const starsLength = stars.length;
-        
-
-        let i;
-        
-        stars.map((star) => {
-            
-            star.onclick = () => {
-            i = stars.indexOf(star);
-            if (star.className===starClassInactive) {
-                for (i; i >= 0; --i) {
-                    stars[i].className = starClassActive;
+    function displayFinishedBooks(){
+        fetch('/')
+        .then((res) => res.json())
+        .then(data => {
+            data.forEach((book) => {
+                savedBooks.push(book)
+           })
+            console.log('Read Books')
+            console.log('saved books -->', savedBooks)
+            savedBooks.forEach(book => {
+                if (book.list == 'read'){
+                    displayListBooks(book)
                 }
-                let ratingNumber = document.getElementsByClassName(starClassActive).length
-                savedBooks.forEach(book => {
-                    if (book.id == bookId){
-                        book.stars = ratingNumber
-                        console.log(book)
-                    }
-                })
-                
-            } else {
-                i++;
-                for (i; i < starsLength; ++i) stars[i].className = starClassInactive;
-                let ratingNumber = document.getElementsByClassName(starClassActive).length
-                savedBooks.forEach(book => {
-                    if (book.id == bookId){
-                        book.stars = ratingNumber
-                        console.log(book)
-                    }
-                })
-            }
-            };
-        });
-
+            })
+        })
     }
 
-})(window);
+    function displayToReadBooks(){
+        fetch('/')
+        .then((res) => res.json())
+        .then(data => {
+            data.forEach((book) => {
+                savedBooks.push(book)
+            })
+            console.log('Unread Books')
+            console.log('saved books -->', savedBooks)
+            savedBooks.forEach(book => {
+                if (book.list == 'unread'){
+                    displayListBooks(book)
+                }
+            })
+        })
+    }
+
+    function addToDB(book) {
+
+        fetch('/', {
+          method: "POST",
+          body: JSON.stringify(book),
+          headers: {'Content-Type': 'application/json; charset=UTF-8'}
+        }).then((res) => res.json())
+        .then((data) => {
+            console.log('add to db fn')
+            console.log(data)
+        });
+      }
+
+}) (window);
+
+function executeRating(stars, bookId) {
+    const starClassActive = `rating__star ${bookId} fas fa-star`;
+    const starClassInactive = `rating__star ${bookId} far fa-star`;
+    const starsLength = stars.length;
+    
+
+    let i;
+    
+    stars.map((star) => {
+        
+        let ratingNumber;
+
+        star.onclick = () => {
+        i = stars.indexOf(star);
+        if (star.className===starClassInactive) {
+            for (i; i >= 0; --i) {
+                stars[i].className = starClassActive;
+            }
+            
+            ratingNumber = document.getElementsByClassName(starClassActive).length
+            savedBooks.forEach(book => {
+                if (book.id == bookId){
+                    book.stars = ratingNumber
+                    updateBookInDB(book)
+                }
+            })
+            
+        } else if (star.className===starClassActive){
+            i++;
+            for (i; i < starsLength; ++i) stars[i].className = starClassInactive;
+            let ratingNumber = document.getElementsByClassName(starClassActive).length
+            savedBooks.forEach(book => {
+                if (book.id == bookId){
+                    book.stars = ratingNumber
+                    updateBookInDB(book)
+                }
+            })
+        }
+        };
+    });
+
+}
+
+function updateBookInDB(book) {
+    console.log('In updateBookInDB')
+    let bookToAdd = book;
+    let id = bookToAdd.id;
+    let stars = {'stars': book.stars};
+
+    fetch(`/:${id}`, {
+        method: 'PUT',
+        body: JSON.stringify(stars),
+        headers: {'Content-Type': 'application/json; charset=UTF-8'}
+    })
+    .then(res => res.json())
+}
+

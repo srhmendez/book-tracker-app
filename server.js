@@ -21,6 +21,8 @@ app.get('/public/')
 
 app.use('/', router);
 
+app.use(express.static('public'));
+
 
 connectDB();
 

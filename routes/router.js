@@ -1,55 +1,23 @@
 const express = require ('express');
 const router = express.Router();
+const controller = require('../controller/controller')
 
-let books = [
-    {
-        "id": "OL29905539M",
-        "title": "There's Nothing Like Your Hug",
-        "author": [
-            "Love Vision"
-        ],
-        "isbn": "1659198771",
-        "published": [
-            "2020"
-        ],
-        "list": "read",
-        "stars": 5
-    },
-    {
-        "id": "OL29926841M",
-        "title": "Hug Makes You Feel Good All Day",
-        "author": [
-            "Love Vision"
-        ],
-        "isbn": "9781658910491",
-        "published": [
-            "2020"
-        ],
-        "list": "read",
-        "stars": 3
-    }
 
-]
+//all routes are starting with /
+
+
+//CRUD to database
 
 //get all books
-router.get('/', (req, res) => {
-    res.send(books);
-})
+router.get('/', controller.find)
 
-//add book to savedBooks Array
-router.post('/', (req, res) => {
+//add a book to saved list
+router.post('/', controller.create)
 
-    //Error handling
-    if (req.body === false){
-        res.status(400).send({message: "Request cannot be empty!!"})
-        return
-    }
+//update a book by id
+router.put('/:id', controller.update)
 
-    
-    books.push(req.body)
-    res.send(books)
-
-})
 
 
 module.exports = router;
+
