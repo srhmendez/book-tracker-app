@@ -69,10 +69,16 @@ exports.update = async (req, res) => {
     }
 
     //updating book
-    const id = req.params._id;
+    const id = req.params.id;
 
-    await bookDB.findOneAndUpdate(id, req.body, { useFindAndModify: false })
-    .then(data => res.send(data))
+    bookDB.findByIdAndUpdate(id, req.body, { useFindAndModify: false })
+    .then(data => {
+        if(!data){
+            res.status(404).send({ message: `Cannot update user with id: ${id}. User with that ID cannot be found`})
+        } else {
+            res.send(data);
+        }
+    })
     .catch(error => {
         res.status(500).send(error, { message: "An Error has occurred while attempting to update book in Database in the controller update operation"});
     });

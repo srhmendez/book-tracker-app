@@ -153,33 +153,88 @@ let savedBooks = [];
     function displayListBooks(book){
         let unreadDisplayListDiv = document.getElementById('read-list-container');
         let readDisplayListDiv = document.getElementById('list-container');
-        console.log('this is the book', book)
+        let ratingMessage;
+
+        if (book.stars == null) {
+            ratingMessage = 'No stars yet.';
+        } else {
+            ratingMessage = `${book.stars} Star rating`
+        }
 
             if (window.location.pathname == '/finished-books.html' && book.list == 'read'){
-                let bookCard = `
-                <div class="list-card">
-                    <div class="card-body-list">
-                        <img class="placeholder" src="/images/placeholder.png">
-                        <div class="list-book-info" id="${book.id}">
-                            <h4>${book.title}</h4>
-                            <h5>Author: ${book.author}</h5>
-                            <p>ISBN:${book.isbn}</p>
-                            <div id="stars-${book.id}" class="rating">
-                                <i value="1" class="rating__star ${book.id} far fa-star"></i>
-                                <i value="2" class="rating__star ${book.id} far fa-star"></i>
-                                <i value="3" class="rating__star ${book.id} far fa-star"></i>
-                                <i value="4" class="rating__star ${book.id} far fa-star"></i>
-                                <i value="5" class="rating__star ${book.id} far fa-star"></i>
-                                <span class="rating__result"></span>
+                
+                if (book.stars == null){
+                    let bookCard = `
+                    <div class="list-card">
+                        <div class="card-body-list">
+                            <img class="placeholder" src="/images/placeholder.png">
+                            <div class="list-book-info" id="${book.id}">
+                                <h4>${book.title}</h4>
+                                <h5>Author: ${book.author}</h5>
+                                <p>ISBN:${book.isbn}</p>
+                                <p>Rate your read.
+                                <div id="stars-${book.id}" class="rating">
+                                    <i value="1" class="rating__star ${book.id} far fa-star"></i>
+                                    <i value="2" class="rating__star ${book.id} far fa-star"></i>
+                                    <i value="3" class="rating__star ${book.id} far fa-star"></i>
+                                    <i value="4" class="rating__star ${book.id} far fa-star"></i>
+                                    <i value="5" class="rating__star ${book.id} far fa-star"></i>
+                                    <br>
+                                    <span class="rating__result"> ${ratingMessage}</span>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                `
-                readDisplayListDiv.insertAdjacentHTML('beforeend', bookCard)
-                let stars = [...document.getElementsByClassName(`rating__star ${book.id}`)];
-                let bookId = book.id;
-                document.getElementById(`stars-${book.id}`).addEventListener('change', executeRating(stars, bookId))
+                    `
+                    readDisplayListDiv.insertAdjacentHTML('beforeend', bookCard)
+                    let stars = [...document.getElementsByClassName(`rating__star ${book.id}`)];
+                    let bookId = book.id;
+                    document.getElementById(`stars-${book.id}`).addEventListener('change', executeRating(stars, bookId))
+                } else {
+                    console.log(`${book.title} has stars!!`)
+                    console.log(book.stars)
+                    let starRatingNumber = book.stars;
+
+                    let bookCard = `
+                    <div class="list-card">
+                        <div class="card-body-list">
+                            <img class="placeholder" src="/images/placeholder.png">
+                            <div class="list-book-info" id="${book.id}">
+                                <h4>${book.title}</h4>
+                                <h5>Author: ${book.author}</h5>
+                                <p>ISBN:${book.isbn}</p>
+                                <p>Rate your read.
+                                <div id="stars-${book.id}" class="rating">
+                                    <i value="1" class="rating__star ${book.id} far fa-star"></i>
+                                    <i value="2" class="rating__star ${book.id} far fa-star"></i>
+                                    <i value="3" class="rating__star ${book.id} far fa-star"></i>
+                                    <i value="4" class="rating__star ${book.id} far fa-star"></i>
+                                    <i value="5" class="rating__star ${book.id} far fa-star"></i>
+                                    <br>
+                                    <span class="rating__result"> ${ratingMessage}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    `
+                    readDisplayListDiv.insertAdjacentHTML('beforeend', bookCard)
+                    let stars = [...document.getElementsByClassName(`rating__star ${book.id}`)];
+
+                    let i = 0;
+                    let emptyStars = 6;
+                    stars.forEach(star => {
+                        if (i < starRatingNumber){
+                            star.classList.add(`fas`)
+                            emptyStars--
+                        }
+                        i++
+                    })
+                    console.log(emptyStars -1)
+
+                
+                    let bookId = book.id;
+                    document.getElementById(`stars-${book.id}`).addEventListener('change', executeRating(stars, bookId))
+                }
 
             } else if (window.location.pathname == '/to-read-books.html' && book.list == 'unread') {
 
@@ -294,62 +349,71 @@ let savedBooks = [];
         });
       }
 
+      function executeRating(stars, bookId) {
+        const starClassActive = `rating__star ${bookId} fas fa-star`;
+        const starClassInactive = `rating__star ${bookId} far fa-star`;
+        const starsLength = stars.length;
+        
+    
+        let i;
+        
+        stars.map((star) => {
+            
+            let ratingNumber;
+    
+            star.onclick = () => {
+            i = stars.indexOf(star);
+            if (star.className===starClassInactive) {
+                for (i; i >= 0; --i) {
+                    stars[i].className = starClassActive;
+                }
+                
+                ratingNumber = document.getElementsByClassName(starClassActive).length
+                savedBooks.forEach(book => {
+                    if (book.id == bookId){
+                        book.stars = ratingNumber
+                        updateBookInDB(book)
+                        sortListBooks();
+                    }
+                })
+                
+            } else if (star.className===starClassActive){
+                i++;
+                for (i; i < starsLength; ++i) stars[i].className = starClassInactive;
+                let ratingNumber = document.getElementsByClassName(starClassActive).length
+                savedBooks.forEach(book => {
+                    if (book.id == bookId){
+                        book.stars = ratingNumber
+                        updateBookInDB(book)
+                        sortListBooks();
+                    }
+                })
+            }
+            };
+        });
+    }
+
 }) (window);
 
-function executeRating(stars, bookId) {
-    const starClassActive = `rating__star ${bookId} fas fa-star`;
-    const starClassInactive = `rating__star ${bookId} far fa-star`;
-    const starsLength = stars.length;
-    
 
-    let i;
-    
-    stars.map((star) => {
-        
-        let ratingNumber;
-
-        star.onclick = () => {
-        i = stars.indexOf(star);
-        if (star.className===starClassInactive) {
-            for (i; i >= 0; --i) {
-                stars[i].className = starClassActive;
-            }
-            
-            ratingNumber = document.getElementsByClassName(starClassActive).length
-            savedBooks.forEach(book => {
-                if (book.id == bookId){
-                    book.stars = ratingNumber
-                    updateBookInDB(book)
-                }
-            })
-            
-        } else if (star.className===starClassActive){
-            i++;
-            for (i; i < starsLength; ++i) stars[i].className = starClassInactive;
-            let ratingNumber = document.getElementsByClassName(starClassActive).length
-            savedBooks.forEach(book => {
-                if (book.id == bookId){
-                    book.stars = ratingNumber
-                    updateBookInDB(book)
-                }
-            })
-        }
-        };
-    });
-
-}
 
 function updateBookInDB(book) {
     console.log('In updateBookInDB')
-    let bookToAdd = book;
-    let id = bookToAdd.id;
-    let stars = {'stars': book.stars};
+    let bookToUpdate = book;
+    let id;
 
-    fetch(`/:${id}`, {
-        method: 'PUT',
-        body: JSON.stringify(stars),
-        headers: {'Content-Type': 'application/json; charset=UTF-8'}
+    if (id){
+        id = bookToUpdate.id;
+    } else {
+        id = bookToUpdate._id
+    }
+
+    fetch(`/${id}`, {
+        method: 'PUT', 
+        headers: {'Content-Type': 'application/json; charset=UTF-8'},
+        body: JSON.stringify(book),
     })
     .then(res => res.json())
+    .then(data => console.log(data))
 }
 
